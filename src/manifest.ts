@@ -1,5 +1,5 @@
 import { defineManifest } from '@crxjs/vite-plugin'
-import packageData from '../package.json'
+import * as packageData from '../package.json'
 
 //@ts-ignore
 const isDev = process.env.NODE_ENV == 'development'
