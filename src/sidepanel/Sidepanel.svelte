@@ -70,7 +70,7 @@
           />
         </div>
         <div class="flex flex-col">
-          <div class="text-[10px] h-6 leading-6">
+          <div class="text-xs h-6 leading-6">
             <button
               title="Register"
               on:click={() => (draftActionType = Action.REGISTER)}
