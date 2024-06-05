@@ -3,12 +3,8 @@
   import '../app.css'
   import logo from '../assets/logo.png'
   import { onMount } from 'svelte'
-
-  enum Action {
-    REGISTER = 'RW',
-    DROP = 'DW',
-    WAITLIST = 'WL',
-  }
+  import { Action } from '../types'
+  import ActionOption from './ActionOption.svelte'
 
   let countSync = 0
 
@@ -42,7 +38,7 @@
     <p class="text-xs mb-2">
       Enter your CRNs for register, drop or waitlist for courses. Click
       <a
-        class="underline text-blue-500"
+        class="underline text-blue-500 outline-none outline-offset-2 focus-visible:outline-gray-400 focus-visible:outline-1"
         href="https://www.cityu.edu.hk/arro/creg/wadp_main.htm"
         target="_blank">here</a
       >
@@ -64,45 +60,30 @@
         <div>
           <input
             type="text"
-            class="w-40 h-6 text-[10px] px-[6px] bg-gray-50 outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
+            class="w-40 h-6 text-[12px] px-[6px] bg-gray-50 outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
             placeholder="5 digits CRN"
             bind:value={draftCRN}
           />
         </div>
         <div class="flex flex-col">
           <div class="text-xs h-6 leading-6">
-            <button
+            <ActionOption
               title="Register"
-              on:click={() => (draftActionType = Action.REGISTER)}
-              class={classNames(
-                'cursor-pointer after:content-[attr(title)] after:block after:font-bold after:h-0 after:overflow-hidden after:invisible',
-                {
-                  'font-bold underline': draftActionType === Action.REGISTER,
-                },
-              )}>Register</button
-            >
+              representAction={Action.REGISTER}
+              bind:setAction={draftActionType}
+            />
             <span class="inline-block px-1">/</span>
-            <button
+            <ActionOption
               title="Drop"
-              on:click={() => (draftActionType = Action.DROP)}
-              class={classNames(
-                'cursor-pointer after:content-[attr(title)] after:block after:font-bold after:h-0 after:overflow-hidden after:invisible',
-                {
-                  'font-bold underline': draftActionType === Action.DROP,
-                },
-              )}>Drop</button
-            >
+              representAction={Action.DROP}
+              bind:setAction={draftActionType}
+            />
             <span class="inline-block px-1">/</span>
-            <button
+            <ActionOption
               title="Waitlist"
-              on:click={() => (draftActionType = Action.WAITLIST)}
-              class={classNames(
-                'cursor-pointer after:content-[attr(title)] after:block after:font-bold after:h-0 after:overflow-hidden after:invisible',
-                {
-                  'font-bold underline': draftActionType === Action.WAITLIST,
-                },
-              )}>Waitlist</button
-            >
+              representAction={Action.WAITLIST}
+              bind:setAction={draftActionType}
+            />
           </div>
           <div class="text-[10px] text-gray-500 leading-3 mb-3">
             {#if draftActionType === Action.REGISTER}
@@ -117,7 +98,7 @@
           </div>
           <div>
             <button
-              class="h-6 text-[12px] px-4 bg-gray-50 inline-block outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
+              class="h-6 text-xs px-4 bg-gray-50 hover:bg-gray-200 inline-block select-none outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
               >Add</button
             >
           </div>
@@ -135,14 +116,19 @@
     <div class="flex gap-2 mb-2">
       <div class="leading-4">Auto Submit:</div>
       <div class="leading-4 flex gap-1 items-center">
-        <input type="checkbox" class="h-3 w-3" bind:checked={autoSubmit} />
-        <div>
+        <input
+          type="checkbox"
+          id="autoSubmit"
+          class="h-3 w-3 outline-none outline-offset-2 focus-visible:outline-gray-400 focus-visible:outline-1"
+          bind:checked={autoSubmit}
+        />
+        <label for="autoSubmit">
           {#if autoSubmit}
             True
           {:else}
             False
           {/if}
-        </div>
+        </label>
       </div>
     </div>
     <div class="text-[10px] text-gray-500 leading-3 mb-3">
