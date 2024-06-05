@@ -1,16 +1,33 @@
 <script lang="ts">
-  import classNames from 'classnames'
   import '../app.css'
   import logo from '../assets/logo.png'
   import { onMount } from 'svelte'
-  import { Action } from '../types'
+  import { Action, Plan } from '../types'
   import ActionOption from './ActionOption.svelte'
+  import SummaryItemChip from './SummaryItemChip.svelte'
 
   let countSync = 0
 
   let draftCRN = '' as string
   let draftActionType = Action.REGISTER as Action
-  let autoSubmit = false as boolean
+
+  let plan: Plan = {
+    items: [],
+    autoSubmit: false,
+  }
+
+  plan.items = [
+    { CRN: '12341', action: Action.REGISTER },
+    { CRN: '12342', action: Action.DROP },
+    { CRN: '12343', action: Action.WAITLIST },
+    { CRN: '12344', action: Action.REGISTER },
+    { CRN: '12345', action: Action.REGISTER },
+    { CRN: '12346', action: Action.REGISTER },
+    { CRN: '12347', action: Action.REGISTER },
+    { CRN: '12348', action: Action.REGISTER },
+    { CRN: '12349', action: Action.REGISTER },
+    { CRN: '12340', action: Action.REGISTER },
+  ]
 
   onMount(() => {
     chrome.storage.sync.get(['count'], (result) => {
@@ -44,9 +61,22 @@
       >
       to learn more about Web Add/Drop.
     </p>
-    <div class="w-full h-48 bg-gray-50 mb-3">
-      <!-- TODO -->
-    </div>
+    {#if plan.items.length > 0}
+      <div
+        class="w-full h-24 bg-gray-50 mb-3 p-[6px] flex gap-[6px] flex-wrap content-start overflow-y-auto bar-"
+      >
+        {#each plan.items as item (item.CRN)}
+          <SummaryItemChip
+            {item}
+            on:remove={(it) => (plan.items = plan.items.filter((i) => i !== it.detail))}
+          />
+        {/each}
+      </div>
+    {:else}
+      <div class="w-full h-24 bg-gray-50 mb-3 p-[6px]">
+        <div class="text-xs text-gray-500 mb-3 select-none">All pending actions will be shown here</div>
+      </div>
+    {/if}
     <div class="flex gap-2">
       <div class="flex flex-col gap-2">
         <div class="flex flex-col">
@@ -98,7 +128,7 @@
           </div>
           <div>
             <button
-              class="h-6 text-xs px-4 bg-gray-50 hover:bg-gray-200 inline-block select-none outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
+              class="h-6 text-xs px-4 bg-gray-50 hover:bg-gray-200 focus-visible:bg-gray-200 inline-block select-none outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
               >Add</button
             >
           </div>
@@ -120,10 +150,10 @@
           type="checkbox"
           id="autoSubmit"
           class="h-3 w-3 outline-none outline-offset-2 focus-visible:outline-gray-400 focus-visible:outline-1"
-          bind:checked={autoSubmit}
+          bind:checked={plan.autoSubmit}
         />
         <label for="autoSubmit">
-          {#if autoSubmit}
+          {#if plan.autoSubmit}
             True
           {:else}
             False
@@ -132,7 +162,7 @@
       </div>
     </div>
     <div class="text-[10px] text-gray-500 leading-3 mb-3">
-      {#if autoSubmit}
+      {#if plan.autoSubmit}
         We will also click SUBMIT automatically at the Course Registration page to finish
         registration
       {:else}
@@ -145,5 +175,18 @@
 <style lang="postcss">
   :global(body) {
     @apply font-sans;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6.4px;
+  }
+
+  *::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3.2px;
   }
 </style>
