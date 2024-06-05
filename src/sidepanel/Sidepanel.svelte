@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "../app.css";
   import { onMount } from 'svelte'
 
   let countSync = 0
@@ -18,7 +19,7 @@
 </script>
 
 <main>
-  <h3>SidePanel Page</h3>
+  <h3 class="bg-black py-5">SidePanel Page</h3>
 
   <h4>Count from Popup: {countSync}</h4>
 
