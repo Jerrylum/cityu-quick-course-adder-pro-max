@@ -1,4 +1,4 @@
-# cityu-quick-course-adder-2024
+# cityu-quick-course-adder-pro-max
 
 > a chrome extension tools built with Vite + Svelte, and Manifest v3
 
@@ -13,7 +13,7 @@
 run the command
 
 ```shell
-$ cd cityu-quick-course-adder-2024
+$ cd cityu-quick-course-adder-pro-max
 
 $ npm run dev
 ```
@@ -21,7 +21,7 @@ $ npm run dev
 ### Chrome Extension Developer Mode
 
 1. set your Chrome browser 'Developer mode' up
-2. click 'Load unpacked', and select `cityu-quick-course-adder-2024/build` folder
+2. click 'Load unpacked', and select `cityu-quick-course-adder-pro-max/build` folder
 
 ### Nomal FrontEnd Developer Mode
 
