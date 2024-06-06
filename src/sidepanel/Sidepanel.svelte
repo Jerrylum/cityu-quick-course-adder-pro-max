@@ -15,8 +15,7 @@
 
   onMount(() => {
     chrome.storage.local.get(['plan'], (result) => {
-      plan = result.plan ?? { items: [], autoSubmit: false }
-      console.log('Retrieved plan:', plan)
+      plan = result.plan ?? plan
     })
 
     // chrome.runtime.onMessage.addListener((request) => {
