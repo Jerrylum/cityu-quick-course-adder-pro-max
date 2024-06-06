@@ -5,43 +5,26 @@
   import { Action, Plan } from '../types'
   import ActionOption from './ActionOption.svelte'
   import SummaryItemChip from './SummaryItemChip.svelte'
-  import { FormEventHandler, KeyboardEventHandler, MouseEventHandler } from 'svelte/elements'
-  import classNames from 'classnames'
-
-  let displayError = '' as string
+  import { FormEventHandler } from 'svelte/elements'
 
   let draftCRN = '' as string
   let draftActionType = Action.REGISTER as Action
+  let displayError = '' as string
 
-  let plan: Plan = {
-    items: [],
-    autoSubmit: false,
-  }
+  let plan: Plan = { items: [], autoSubmit: false }
 
-  plan.items = [
-    { CRN: '12341', action: Action.REGISTER },
-    { CRN: '12342', action: Action.DROP },
-    { CRN: '12343', action: Action.WAITLIST },
-    { CRN: '12344', action: Action.REGISTER },
-    { CRN: '12345', action: Action.REGISTER },
-    { CRN: '12346', action: Action.REGISTER },
-    { CRN: '12347', action: Action.REGISTER },
-    { CRN: '12348', action: Action.REGISTER },
-    { CRN: '12349', action: Action.REGISTER },
-    { CRN: '12340', action: Action.REGISTER },
-  ]
+  onMount(() => {
+    chrome.storage.local.get(['plan'], (result) => {
+      plan = result.plan ?? { items: [], autoSubmit: false }
+      console.log('Retrieved plan:', plan)
+    })
 
-  // onMount(() => {
-  //   chrome.storage.sync.get(['count'], (result) => {
-  //     countSync = result.count || 0
-  //   })
-
-  //   chrome.runtime.onMessage.addListener((request) => {
-  //     if (request.type === 'COUNT') {
-  //       countSync = request?.count ?? 0
-  //     }
-  //   })
-  // })
+    // chrome.runtime.onMessage.addListener((request) => {
+    //   if (request.type === 'COUNT') {
+    //     countSync = request?.count ?? 0
+    //   }
+    // })
+  })
 
   const onInput: FormEventHandler<HTMLInputElement> = (e) => {
     const value = e.currentTarget.value
@@ -52,21 +35,28 @@
 
   function onAddCRN() {
     if (!/^\d{5}$/.test(draftCRN)) {
-      // alert(draftCRN + ' CRN is not 5 digit')
       displayError = 'CRN is not 5 digit'
       return
     }
     if (plan.items.filter((i) => i.CRN === draftCRN).length > 0) {
-      // alert('CRN is duplicated')
       displayError = 'CRN is duplicated'
       return
     }
-    // plan.items = [...plan.items, { CRN: draftCRN, action: draftActionType }]
     plan.items.push({ CRN: draftCRN, action: draftActionType })
     plan.items = plan.items // force update
     draftCRN = ''
     draftActionType = Action.REGISTER
     displayError = ''
+    syncPlan()
+  }
+
+  function onDeleteCRN(crn: string) {
+    plan.items = plan.items.filter((i) => i.CRN !== crn)
+    syncPlan()
+  }
+
+  function syncPlan() {
+    chrome.storage.local.set({ plan })
   }
 </script>
 
@@ -94,10 +84,7 @@
         class="w-full h-24 bg-gray-50 mb-3 p-[6px] flex gap-[6px] flex-wrap content-start overflow-y-auto bar-"
       >
         {#each plan.items as item (item.CRN)}
-          <SummaryItemChip
-            {item}
-            on:remove={(it) => (plan.items = plan.items.filter((i) => i !== it.detail))}
-          />
+          <SummaryItemChip {item} on:remove={(it) => onDeleteCRN(it.detail.CRN)} />
         {/each}
       </div>
     {:else}
@@ -125,13 +112,13 @@
             type="text"
             class="w-40 h-6 text-[12px] px-[6px] bg-gray-50 outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
             maxlength="5"
+            placeholder="5 digits CRN"
             on:input={onInput}
             on:keydown={(e) => {
               if (e.key === 'Enter') {
                 onAddCRN()
               }
             }}
-            placeholder="5 digits CRN"
             bind:value={draftCRN}
           />
         </div>
@@ -172,9 +159,7 @@
           <div>
             <button
               class="h-6 text-xs px-4 bg-gray-50 hover:bg-gray-200 focus-visible:bg-gray-200 inline-block select-none outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
-              on:click={() => {
-                onAddCRN()
-              }}>Add</button
+              on:click={onAddCRN}>Add</button
             >
           </div>
         </div>
@@ -196,6 +181,7 @@
           id="autoSubmit"
           class="h-3 w-3 outline-none outline-offset-2 focus-visible:outline-gray-400 focus-visible:outline-1"
           bind:checked={plan.autoSubmit}
+          on:change={syncPlan}
         />
         <label for="autoSubmit">
           {#if plan.autoSubmit}

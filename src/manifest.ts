@@ -25,7 +25,7 @@ export default defineManifest({
   },
   content_scripts: [
     {
-      matches: ['http://*/*', 'https://*/*'],
+      matches: ['https://*.cityu.edu.hk/StudentRegistrationSsb/ssb/classRegistration/*'],
       js: ['src/contentScript/index.ts'],
     },
   ],
