@@ -5,6 +5,7 @@
   import { Action, Plan } from '../types'
   import ActionOption from './ActionOption.svelte'
   import SummaryItemChip from './SummaryItemChip.svelte'
+  import { FormEventHandler, KeyboardEventHandler, MouseEventHandler } from 'svelte/elements'
 
   let countSync = 0
 
@@ -29,17 +30,40 @@
     { CRN: '12340', action: Action.REGISTER },
   ]
 
-  onMount(() => {
-    chrome.storage.sync.get(['count'], (result) => {
-      countSync = result.count || 0
-    })
+  // onMount(() => {
+  //   chrome.storage.sync.get(['count'], (result) => {
+  //     countSync = result.count || 0
+  //   })
 
-    chrome.runtime.onMessage.addListener((request) => {
-      if (request.type === 'COUNT') {
-        countSync = request?.count ?? 0
-      }
-    })
-  })
+  //   chrome.runtime.onMessage.addListener((request) => {
+  //     if (request.type === 'COUNT') {
+  //       countSync = request?.count ?? 0
+  //     }
+  //   })
+  // })
+
+  const onInput: FormEventHandler<HTMLInputElement> = (e) => {
+    const value = e.currentTarget.value
+    if (!/^\d{0,5}$/.test(value)) {
+      e.currentTarget.value = value.replace(/\D/g, '')
+    }
+  }
+
+  function onAddCRN() {
+    if (!/^\d{5}$/.test(draftCRN)) {
+      alert(draftCRN + ' CRN is not 5 digit')
+      return
+    }
+    if (plan.items.filter((i) => i.CRN === draftCRN).length > 0) {
+      alert('CRN is duplicated')
+      return
+    }
+    // plan.items = [...plan.items, { CRN: draftCRN, action: draftActionType }]
+    plan.items.push({ CRN: draftCRN, action: draftActionType })
+    plan.items = plan.items // force update
+    draftCRN = ''
+    draftActionType = Action.REGISTER
+  }
 </script>
 
 <main class="p-4 flex flex-col gap-2">
@@ -74,7 +98,9 @@
       </div>
     {:else}
       <div class="w-full h-24 bg-gray-50 mb-3 p-[6px]">
-        <div class="text-xs text-gray-500 mb-3 select-none">All pending actions will be shown here</div>
+        <div class="text-xs text-gray-500 mb-3 select-none">
+          All pending actions will be shown here
+        </div>
       </div>
     {/if}
     <div class="flex gap-2">
@@ -91,6 +117,13 @@
           <input
             type="text"
             class="w-40 h-6 text-[12px] px-[6px] bg-gray-50 outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
+            maxlength="5"
+            on:input={onInput}
+            on:keydown={(e) => {
+              if (e.key === 'Enter') {
+                onAddCRN()
+              }
+            }}
             placeholder="5 digits CRN"
             bind:value={draftCRN}
           />
@@ -129,7 +162,9 @@
           <div>
             <button
               class="h-6 text-xs px-4 bg-gray-50 hover:bg-gray-200 focus-visible:bg-gray-200 inline-block select-none outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
-              >Add</button
+              on:click={() => {
+                onAddCRN()
+              }}>Add</button
             >
           </div>
         </div>
