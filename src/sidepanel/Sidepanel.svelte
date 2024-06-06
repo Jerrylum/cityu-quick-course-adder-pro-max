@@ -6,8 +6,9 @@
   import ActionOption from './ActionOption.svelte'
   import SummaryItemChip from './SummaryItemChip.svelte'
   import { FormEventHandler, KeyboardEventHandler, MouseEventHandler } from 'svelte/elements'
+  import classNames from 'classnames'
 
-  let countSync = 0
+  let displayError = '' as string
 
   let draftCRN = '' as string
   let draftActionType = Action.REGISTER as Action
@@ -51,11 +52,13 @@
 
   function onAddCRN() {
     if (!/^\d{5}$/.test(draftCRN)) {
-      alert(draftCRN + ' CRN is not 5 digit')
+      // alert(draftCRN + ' CRN is not 5 digit')
+      displayError = 'CRN is not 5 digit'
       return
     }
     if (plan.items.filter((i) => i.CRN === draftCRN).length > 0) {
-      alert('CRN is duplicated')
+      // alert('CRN is duplicated')
+      displayError = 'CRN is duplicated'
       return
     }
     // plan.items = [...plan.items, { CRN: draftCRN, action: draftActionType }]
@@ -63,6 +66,7 @@
     plan.items = plan.items // force update
     draftCRN = ''
     draftActionType = Action.REGISTER
+    displayError = ''
   }
 </script>
 
@@ -108,12 +112,15 @@
         <div class="flex flex-col">
           <div class="text-xs text-right h-6 pl-1 leading-6">CRN:</div>
         </div>
+        {#if displayError !== ''}
+          <div class="flex flex-col h-[12px]"></div>
+        {/if}
         <div class="flex flex-col">
           <div class="text-xs text-right h-6 pl-1 leading-6">Action:</div>
         </div>
       </div>
       <div class="flex flex-col gap-2">
-        <div>
+        <div class="flex">
           <input
             type="text"
             class="w-40 h-6 text-[12px] px-[6px] bg-gray-50 outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
@@ -128,6 +135,9 @@
             bind:value={draftCRN}
           />
         </div>
+        {#if displayError !== ''}
+          <div class="flex flex-col text-[10px] h-[12px] text-red-500">{displayError}</div>
+        {/if}
         <div class="flex flex-col">
           <div class="text-xs h-6 leading-6">
             <ActionOption
