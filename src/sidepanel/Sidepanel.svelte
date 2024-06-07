@@ -1,6 +1,6 @@
 <script lang="ts">
   import '../app.css'
-  import logo from '../assets/logo.png'
+  import logo from '../assets/logo.svg'
   import { onMount } from 'svelte'
   import { Action, Plan } from '../types'
   import ActionOption from './ActionOption.svelte'
