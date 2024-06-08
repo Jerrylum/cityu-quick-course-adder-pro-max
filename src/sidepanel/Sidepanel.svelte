@@ -5,7 +5,6 @@
   import { Action, Plan } from '../types'
   import ActionOption from './ActionOption.svelte'
   import SummaryItemChip from './SummaryItemChip.svelte'
-  import { FormEventHandler } from 'svelte/elements'
 
   let draftCRN = '' as string
   let draftActionType = Action.REGISTER as Action
@@ -27,7 +26,7 @@
     // })
   })
 
-  const onInput: FormEventHandler<HTMLInputElement> = (e) => {
+  function onInput(e: Event & { currentTarget: EventTarget & HTMLInputElement }) {
     const value = e.currentTarget.value
     if (!/^\d{0,5}$/.test(value)) {
       e.currentTarget.value = value.replace(/\D/g, '')
