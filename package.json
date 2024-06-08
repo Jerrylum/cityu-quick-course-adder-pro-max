@@ -40,7 +40,6 @@
     "vite": "^4.4.11"
   },
   "dependencies": {
-    "@fontsource/inter": "^5.0.18",
-    "classnames": "^2.5.1"
+    "@fontsource/inter": "^5.0.18"
   }
 }
