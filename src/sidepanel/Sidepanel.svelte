@@ -46,11 +46,11 @@
 
   function onAddCRN() {
     if (!/^\d{5}$/.test(draftCRN)) {
-      displayError = 'CRN is not 5 digit'
+      displayError = 'Please input a 5-digit number'
       return
     }
     if (plan.items.filter((i) => i.CRN === draftCRN).length > 0) {
-      displayError = 'CRN is duplicated'
+      displayError = 'Duplicated CRN'
       return
     }
     plan.items.push({ CRN: draftCRN, action: draftActionType })
@@ -129,7 +129,7 @@
             type="text"
             class="w-40 h-6 text-[12px] px-[6px] bg-gray-50 outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
             maxlength="5"
-            placeholder="5 digits CRN"
+            placeholder="5-digit CRN"
             bind:this={crnInput}
             on:input={onInput}
             on:keydown={(e) => {
