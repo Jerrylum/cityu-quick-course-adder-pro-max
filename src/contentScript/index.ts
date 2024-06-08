@@ -1,8 +1,15 @@
-import { Action, Plan, SummaryItem as PlannedSummaryItem } from '../types'
+import {
+  Action,
+  LogExtensionMessage,
+  LogMessage,
+  LogMessageType,
+  Plan,
+  SummaryItem as PlannedSummaryItem,
+} from '../types'
 
 function getPlan(): Promise<Plan> {
   return new Promise((resolve) => {
-    chrome.storage.local.get('plan', (data) => {      
+    chrome.storage.local.get('plan', (data) => {
       resolve(data.plan ?? { items: [], autoSubmit: false })
     })
   })
@@ -18,6 +25,26 @@ function querySelectorOrThrow<T extends HTMLElement>(selector: string): T {
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+let logs = [] as LogMessage[]
+
+function info(message: string) {
+  logs.push({ type: LogMessageType.INFO, message })
+}
+
+function warning(message: string) {
+  logs.push({ type: LogMessageType.WARNING, message })
+}
+
+function error(message: string) {
+  logs.push({ type: LogMessageType.ERROR, message })
+}
+
+function flushLogs() {
+  chrome.storage.local.get('logs', (data) => {
+    chrome.storage.local.set({ logs: [...(data.logs ?? []), ...logs] })
+  })
 }
 
 class ActualSummaryItem {
@@ -125,14 +152,14 @@ function getActionName(action: Action): string {
 function executeAction(actual: ActualSummaryItem, planned: PlannedSummaryItem) {
   if (actual.options.includes(Action.WAITLIST)) {
     actual.option = Action.WAITLIST
-    console.warn(`CRN ${planned.CRN} updated to "Waitlist" instead of "Register" (fulled)`)
+    warning(`CRN ${planned.CRN} updated to "Waitlist" instead of "Register" (fulled)`)
   } else if (actual.option === planned.action) {
-    console.log(`CRN ${planned.CRN} is already set to ${getActionName(planned.action)}, continue`)
+    info(`CRN ${planned.CRN} is already set to ${getActionName(planned.action)}, continue`)
   } else if (actual.options.includes(planned.action)) {
     actual.option = planned.action
-    console.log(`CRN ${planned.CRN} updated to ${getActionName(planned.action)}`)
+    info(`CRN ${planned.CRN} updated to ${getActionName(planned.action)}`)
   } else {
-    console.warn(`CRN ${planned.CRN} is skipped`)
+    warning(`CRN ${planned.CRN} is skipped`)
   }
 }
 
@@ -164,7 +191,7 @@ async function main() {
     const crnInputs = missingItemsInSummary.map((item) => item.CRN)
     env.crnInputs = crnInputs
     env.addCRNToSummary()
-    console.log(`Added missing items to Summary: ${crnInputs.join(', ')}`)
+    info(`Added missing items to Summary: ${crnInputs.join(', ')}`)
 
     // Wait until all missing items are added to the summary for 10s
     for (let i = 0; i < 100; i++) {
@@ -192,13 +219,15 @@ async function main() {
 
     // Submit
     if (plan.autoSubmit) {
-      console.log('Submitting')
+      info('Submitting')
       env.clickSubmit()
     }
 
-    console.log('Exit')
-  } catch (error) {
-    console.error(error)
+    info('Exit')
+  } catch (err) {
+    error(err + '')
+  } finally {
+    flushLogs()
   }
 }
 

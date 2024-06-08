@@ -2,9 +2,10 @@
   import '../app.css'
   import logo from '../assets/logo.svg'
   import { onMount } from 'svelte'
-  import { Action, Plan } from '../types'
+  import { Action, LogMessage, Plan } from '../types'
   import ActionOption from './ActionOption.svelte'
   import SummaryItemChip from './SummaryItemChip.svelte'
+  import LogMessageLine from './LogMessageLine.svelte'
 
   let draftCRN = '' as string
   let draftActionType = Action.REGISTER as Action
@@ -14,17 +15,27 @@
 
   let crnInput: HTMLInputElement
 
+  let logs: LogMessage[] = []
+
+  let isLogDrawerOpen = false
+
   onMount(() => {
-    chrome.storage.local.get(['plan'], (result) => {
+    chrome.storage.local.get(['plan', 'logs'], (result) => {
       plan = result.plan ?? plan
+      logs = result.logs ?? logs
     })
 
-    // chrome.runtime.onMessage.addListener((request) => {
-    //   if (request.type === 'COUNT') {
-    //     countSync = request?.count ?? 0
-    //   }
-    // })
+    chrome.storage.onChanged.addListener((changes) => {
+      if (changes.plan) {
+        plan = changes.plan.newValue
+      }
+      if (changes.logs) {
+        logs = changes.logs.newValue
+      }
+    })
   })
+
+  $: if (logs.length > 0) isLogDrawerOpen = true
 
   function onInput(e: Event & { currentTarget: EventTarget & HTMLInputElement }) {
     const value = e.currentTarget.value
@@ -59,9 +70,14 @@
   function syncPlan() {
     chrome.storage.local.set({ plan })
   }
+
+  function clearLog() {
+    chrome.storage.local.set({ logs: [] })
+    isLogDrawerOpen = false
+  }
 </script>
 
-<main class="p-4 flex flex-col gap-2">
+<main class="p-4 pb-16 flex flex-col gap-2">
   <div class="w-full h-12 flex gap-3">
     <img src={logo} alt="The extension logo" class="w-12 h-12" />
     <div class="h-12 flex flex-col justify-center">
@@ -196,23 +212,38 @@
     </div>
   </div>
   <div
-    class="fixed bottom-0 left-0 right-0 w-full p-4 pt-2 bg-white min-h-60 h-1/3 flex flex-col gap-3 shadow-[0px_0px_8px_4px_rgba(0,0,0,0.1)]"
+    class="fixed bottom-0 left-0 right-0 w-full p-4 pt-2 bg-white min-h-60 h-1/3 flex flex-col gap-3 shadow-[0px_0px_8px_4px_rgba(0,0,0,0.1)] rounded-2xl translate-y-[calc(100%_-_64px)] transition-[translate_0.5s]"
+    class:translate-y-0={isLogDrawerOpen}
   >
+    <button
+      class="h-16 absolute top-0 left-0 right-0"
+      on:click={() => (isLogDrawerOpen = !isLogDrawerOpen)}
+      tabindex="-1"
+    ></button>
     <div class="w-full h-2 flex justify-center cursor-pointer">
-      <div class="w-12 h-2 rounded-md bg-gray-200"></div>
+      <button
+        class="w-12 h-2 rounded-md bg-gray-200 outline-none outline-offset-2 focus-visible:outline-gray-400 focus-visible:outline-1"
+        on:click={() => (isLogDrawerOpen = !isLogDrawerOpen)}
+      ></button>
     </div>
-    <!-- TODO -->
     <p class="text-base text-center">Logs</p>
-    <div class="w-full p-2 bg-gray-50 flex-grow flex flex-col gap-1 overflow-y-auto">
-      <div class="text-[12px] leading-[12px] text-black">
-        CRN 12345 is already set to "Register", continue
-      </div>
-      <div class="text-[12px] leading-[12px] text-yellow-400">
-        CRN 12345 updated to "Waitlist" instead of "Register" (fulled)
-      </div>
-      <div class="text-[12px] leading-[12px] text-red-500">
-        After 10s, still missing items in summary: 12345, 67890
-      </div>
+    <div class="flex flex-col flex-grow h-0 relative">
+      {#if logs.length > 0}
+        <div class="w-full bg-gray-50 flex flex-col flex-grow overflow-y-auto">
+          {#each logs as log}
+            <LogMessageLine message={log} />
+          {/each}
+        </div>
+        <button
+          class="text-[10px] inline bg-gray-50 text-gray-600 hover:text-black absolute bottom-0 right-2 outline-none outline-offset-2 focus-visible:outline-gray-400 focus-visible:outline-1"
+          disabled={!isLogDrawerOpen}
+          on:click={clearLog}>Clear All</button
+        >
+      {:else}
+        <div class="w-full p-2 bg-gray-50 flex flex-col flex-grow gap-1">
+          <div class="text-xs text-gray-500 mb-3 select-none">All logs will be shown here</div>
+        </div>
+      {/if}
     </div>
   </div>
 </main>
