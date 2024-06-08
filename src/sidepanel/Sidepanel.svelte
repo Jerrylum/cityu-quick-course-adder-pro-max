@@ -129,7 +129,7 @@
           {/if}
         </div>
         <div class="flex flex-col">
-          <div class="text-xs h-6 leading-6">
+          <div class=" h-6 leading-6">
             <ActionOption
               title="Register"
               representAction={Action.REGISTER}
@@ -194,6 +194,26 @@
       {:else}
         You will need to click SUBMIT at the Course Registration page to finish registration
       {/if}
+    </div>
+  </div>
+  <div
+    class="fixed bottom-0 left-0 right-0 w-full p-4 pt-2 bg-white min-h-60 h-1/3 flex flex-col gap-3 shadow-[0px_0px_8px_4px_rgba(0,0,0,0.1)]"
+  >
+    <div class="w-full h-2 flex justify-center cursor-pointer">
+      <div class="w-12 h-2 rounded-md bg-gray-200"></div>
+    </div>
+    <!-- TODO -->
+    <p class="text-base text-center">Logs</p>
+    <div class="w-full p-2 bg-gray-50 flex-grow flex flex-col gap-1 overflow-y-auto">
+      <div class="text-[12px] leading-[12px] text-black">
+        CRN 12345 is already set to "Register", continue
+      </div>
+      <div class="text-[12px] leading-[12px] text-yellow-400">
+        CRN 12345 updated to "Waitlist" instead of "Register" (fulled)
+      </div>
+      <div class="text-[12px] leading-[12px] text-red-500">
+        After 10s, still missing items in summary: 12345, 67890
+      </div>
     </div>
   </div>
 </main>
