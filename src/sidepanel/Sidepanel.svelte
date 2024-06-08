@@ -46,6 +46,8 @@
     draftCRN = ''
     draftActionType = Action.REGISTER
     displayError = ''
+    const crnInput = document.getElementById('crnInput') as HTMLInputElement
+    crnInput.focus()
     syncPlan()
   }
 
@@ -112,6 +114,7 @@
             class="w-40 h-6 text-[12px] px-[6px] bg-gray-50 outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
             maxlength="5"
             placeholder="5 digits CRN"
+            id="crnInput"
             on:input={onInput}
             on:keydown={(e) => {
               if (e.key === 'Enter') {
