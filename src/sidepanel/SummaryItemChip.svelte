@@ -17,7 +17,7 @@
   </span>
   <span class="inline-block mr-3 select-none">{item.CRN}</span>
   <button
-    class="rounded-xl outline-none outline-offset-2 focus-visible:outline-gray-400 focus-visible:outline-1 group"
+    class="rounded-xl outline-none outline-offset-2 focus-visible:outline-gray-400 focus-visible:outline-1 flex group"
     on:click={() => dispatch('remove', item)}
   >
     <svg class="inline-block w-[18px] h-[18px] cursor-pointer" focusable="false" viewBox="0 0 24 24"
