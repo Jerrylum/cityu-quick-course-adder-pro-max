@@ -13,8 +13,6 @@
       R
     {:else if item.action === Action.DROP}
       D
-    {:else if item.action === Action.WAITLIST}
-      W
     {/if}
   </span>
   <span class="inline-block mr-3 select-none">{item.CRN}</span>

@@ -141,22 +141,14 @@
               representAction={Action.DROP}
               bind:setAction={draftActionType}
             />
-            <span class="inline-block px-1">/</span>
-            <ActionOption
-              title="Waitlist"
-              representAction={Action.WAITLIST}
-              bind:setAction={draftActionType}
-            />
           </div>
           <div class="text-[10px] text-gray-500 leading-3 mb-3">
             {#if draftActionType === Action.REGISTER}
-              Add this CRN to Summary section, then select "Web Register" in the action dropdown
-              menu
+              Add this CRN to the Summary section, then select “Web Register” or “Waitlist” (if the
+              selected course is full) in the action dropdown menu
             {:else if draftActionType === Action.DROP}
-              Select "Web Drop" in the action dropdown menu for this CRN if it is in the Summary
+              Select “Web Drop” in the action dropdown menu for this CRN if it is in the Summary
               section
-            {:else if draftActionType === Action.WAITLIST}
-              Add this CRN to Summary section, then select "Waitlist" in the action dropdown menu
             {/if}
           </div>
           <div>

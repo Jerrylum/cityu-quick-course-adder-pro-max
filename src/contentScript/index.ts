@@ -123,17 +123,14 @@ function getActionName(action: Action): string {
 }
 
 function executeAction(actual: ActualSummaryItem, planned: PlannedSummaryItem) {
-  if (actual.option === planned.action) {
+  if (actual.options.includes(Action.WAITLIST)) {
+    actual.option = Action.WAITLIST
+    console.warn(`CRN ${planned.CRN} updated to "Waitlist" instead of "Register" (fulled)`)
+  } else if (actual.option === planned.action) {
     console.log(`CRN ${planned.CRN} is already set to ${getActionName(planned.action)}, continue`)
   } else if (actual.options.includes(planned.action)) {
     actual.option = planned.action
     console.log(`CRN ${planned.CRN} updated to ${getActionName(planned.action)}`)
-  } else if (actual.options.includes(Action.WAITLIST) && planned.action === Action.REGISTER) {
-    actual.option = Action.WAITLIST
-    console.warn(`CRN ${planned.CRN} updated to "Waitlist" instead of "Register" (fulled)`)
-  } else if (actual.options.includes(Action.REGISTER) && planned.action === Action.WAITLIST) {
-    actual.option = Action.REGISTER
-    console.warn(`CRN ${planned.CRN} updated to "Register" directly instead of "Waitlist"`)
   } else {
     console.warn(`CRN ${planned.CRN} is skipped`)
   }
