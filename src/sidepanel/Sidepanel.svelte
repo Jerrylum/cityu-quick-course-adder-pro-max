@@ -13,6 +13,8 @@
 
   let plan: Plan = { items: [], autoSubmit: false }
 
+  let crnInput: HTMLInputElement
+
   onMount(() => {
     chrome.storage.local.get(['plan'], (result) => {
       plan = result.plan ?? plan
@@ -46,7 +48,6 @@
     draftCRN = ''
     draftActionType = Action.REGISTER
     displayError = ''
-    const crnInput = document.getElementById('crnInput') as HTMLInputElement
     crnInput.focus()
     syncPlan()
   }
@@ -82,7 +83,7 @@
     </p>
     {#if plan.items.length > 0}
       <div
-        class="w-full h-24 bg-gray-50 mb-3 p-[6px] flex gap-[6px] flex-wrap content-start overflow-y-auto bar-"
+        class="w-full h-24 bg-gray-50 mb-3 p-[6px] flex gap-[6px] flex-wrap content-start overflow-y-auto"
       >
         {#each plan.items as item (item.CRN)}
           <SummaryItemChip {item} on:remove={(it) => onDeleteCRN(it.detail.CRN)} />
@@ -114,7 +115,7 @@
             class="w-40 h-6 text-[12px] px-[6px] bg-gray-50 outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
             maxlength="5"
             placeholder="5 digits CRN"
-            id="crnInput"
+            bind:this={crnInput}
             on:input={onInput}
             on:keydown={(e) => {
               if (e.key === 'Enter') {
