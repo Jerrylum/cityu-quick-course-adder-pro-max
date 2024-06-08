@@ -100,16 +100,16 @@
       <div class="flex flex-col gap-2">
         <div class="flex flex-col">
           <div class="text-xs text-right h-6 pl-1 leading-6">CRN:</div>
+          {#if displayError !== ''}
+            <div class="flex flex-col h-[12px]"></div>
+          {/if}
         </div>
-        {#if displayError !== ''}
-          <div class="flex flex-col h-[12px]"></div>
-        {/if}
         <div class="flex flex-col">
           <div class="text-xs text-right h-6 pl-1 leading-6">Action:</div>
         </div>
       </div>
       <div class="flex flex-col gap-2">
-        <div class="flex">
+        <div class="flex flex-col">
           <input
             type="text"
             class="w-40 h-6 text-[12px] px-[6px] bg-gray-50 outline-none outline-offset-0 focus-visible:outline-gray-400 focus-visible:outline-1"
@@ -124,10 +124,10 @@
             }}
             bind:value={draftCRN}
           />
+          {#if displayError !== ''}
+            <div class="flex flex-col text-[10px] h-[12px] text-red-500">{displayError}</div>
+          {/if}
         </div>
-        {#if displayError !== ''}
-          <div class="flex flex-col text-[10px] h-[12px] text-red-500">{displayError}</div>
-        {/if}
         <div class="flex flex-col">
           <div class="text-xs h-6 leading-6">
             <ActionOption
