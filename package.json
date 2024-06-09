@@ -1,9 +1,9 @@
 {
   "name": "cityu-quick-course-adder-pro-max",
   "displayName": "CityU Quick Course Adder Pro Max",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "author": "Jerry Lum",
-  "description": "",
+  "description": "Automatically register or drop courses on the AIMS Web Add/Drop Course Registration page, a time saver for CityU students.",
   "type": "module",
   "license": "MIT",
   "keywords": [
