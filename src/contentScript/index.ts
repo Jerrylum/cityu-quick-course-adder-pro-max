@@ -191,7 +191,10 @@ async function main() {
     const crnInputs = missingItemsInSummary.map((item) => item.CRN)
     env.crnInputs = crnInputs
     env.addCRNToSummary()
-    info(`Added missing items to Summary: ${crnInputs.join(', ')}`)
+
+    if (crnInputs.length > 0) {
+      info(`Added missing items ${crnInputs.join(', ')} to Summary`)
+    }
 
     // Wait until all missing items are added to the summary for 10s
     for (let i = 0; i < 100; i++) {
