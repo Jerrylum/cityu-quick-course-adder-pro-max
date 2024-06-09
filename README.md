@@ -1,6 +1,40 @@
-# cityu-quick-course-adder-pro-max
+# Simplify Your Course Registration at CityU
 
-> a chrome extension tools built with Vite + Svelte, and Manifest v3
+## Introduction
+
+**CityU Quick Course Adder Pro Max** is a powerful Chrome extension designed specifically for City University of Hong Kong (CityU) students. When you navigate to the Course Registration page, this extension will automatically register, drop, or waitlist courses. It automates the process of entering Course Registration Numbers (CRNs) and selecting the appropriate action for each course, making your course management hassle-free and efficient.
+
+### Key Features:
+
+- **Easy CRN Entry:** Open the side panel by clicking the extension icon. Input your Course Registration Number (CRN) and select the desired action for each course (Register or Drop).
+
+- **Real-Time Action Summary:** View and manage all your pending actions in a dedicated summary section.
+
+- **Auto Submit:** Enable the Auto Submit feature to automate the submission of your course registration. This option saves you time and effort by completing the registration process instantly once you reach the Course Registration page.
+
+- **Log Drawer:** Keep track of all your registration activities with a detailed log. The log drawer is easily accessible and provides a comprehensive history of the performed actions by the extension, helping you monitor and review your registration process.
+
+### How It Works:
+
+1. **Step 1: Enter CRNs**
+
+   - Input your CRNs for the courses you wish to register or drop. Remember to have all CRNs for every module (Class, Lab, Tutorial, Seminar) in the course to prevent link errors.
+   - Actions and statuses are clearly displayed, helping you stay organized.
+
+2. **Step 2: Automated Execution**
+
+   - When you navigate to the Course Registration page, the extension will automatically execute the actions you have set for each CRN.
+   - If Auto Submit is enabled, the extension will also click the SUBMIT button, finalizing your registration. If Auto Submit is disabled, simply click "SUBMIT" on the Course Registration page to finalize your registration.
+
+### Why Choose Quick Course Adder Pro Max?
+
+- **Efficiency:** Save time and avoid the hassle of manual entry and submission. This extension is designed to help you navigate the often stressful registration period with confidence and ease.
+- **Accuracy:** Reduce the risk of errors by automating the registration process. The extension ensures that your CRNs are entered correctly and that the appropriate actions are taken for each course.
+- **Stay Organized**: Keep an organized list of all your registration actions to ensure nothing is missed.
+
+## Responsibility
+
+The developer of the extension is not responsible for any data loss or damage that may occur as a result of using the Extension. This extension is provided as-is and the developer makes no guarantees regarding its functionality or performance. It is a non-official tool and is not associated with City University of Hong Kong.
 
 ## Installing
 
@@ -10,7 +44,7 @@
 
 ## Developing
 
-run the command
+Run the command
 
 ```shell
 $ cd cityu-quick-course-adder-pro-max
@@ -20,24 +54,23 @@ $ npm run dev
 
 ### Chrome Extension Developer Mode
 
-1. set your Chrome browser 'Developer mode' up
-2. click 'Load unpacked', and select `cityu-quick-course-adder-pro-max/build` folder
+1. Set your Chrome browser 'Developer mode' up
+2. Click 'Load unpacked', and select `cityu-quick-course-adder-pro-max/build` folder
 
-### Nomal FrontEnd Developer Mode
+### For FrontEnd Development
 
-1. access `http://0.0.0.0:3000/`
-2. when debugging popup page, open `http://0.0.0.0:3000//popup.html`
-3. when debugging options page, open `http://0.0.0.0:3000//options.html`
+1. Access `http://0.0.0.0:3000/`
+2. When debugging sidepanel page, open `http://0.0.0.0:3000/sidepanel.html`
 
 ## Packing
 
-After the development of your extension run the command
+Run the command
 
 ```shell
 $ npm run build
 ```
 
-Now, the content of `build` folder will be the extension ready to be submitted to the Chrome Web Store. Just take a look at the [official guide](https://developer.chrome.com/webstore/publish) to more infos about publishing.
+The content of `build` folder will be the extension ready to be submitted to the Chrome Web Store.
 
 ---
 
