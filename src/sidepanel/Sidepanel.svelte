@@ -212,7 +212,8 @@
     </div>
   </div>
   <div
-    class="fixed bottom-0 left-0 right-0 w-full p-4 pt-2 bg-white min-h-60 h-1/3 flex flex-col gap-3 shadow-[0px_0px_8px_4px_rgba(0,0,0,0.1)] rounded-2xl translate-y-[calc(100%_-_64px)] transition-[translate_0.5s]"
+    class="fixed bottom-0 left-0 right-0 w-full p-4 pt-2 bg-white min-h-60 h-1/3 flex flex-col gap-3 shadow-[0px_0px_8px_4px_rgba(0,0,0,0.1)] rounded-2xl transition-[translate_0.5s]"
+    class:translate-y-[calc(100%_-_64px)]={!isLogDrawerOpen}
     class:translate-y-0={isLogDrawerOpen}
   >
     <button
