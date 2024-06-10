@@ -88,7 +88,7 @@
   <div>
     <h1 class="text-base mb-2">Step 1</h1>
     <p class="text-xs mb-2">
-      Enter your CRNs for register, drop or waitlist for courses. Click
+      Enter your CRNs to register, drop or waitlist courses. Click
       <a
         class="underline text-blue-500 outline-none outline-offset-2 focus-visible:outline-gray-400 focus-visible:outline-1"
         href="https://www.cityu.edu.hk/arro/creg/wadp_main.htm"
