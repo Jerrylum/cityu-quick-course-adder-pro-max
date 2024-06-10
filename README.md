@@ -30,7 +30,7 @@
 
 - **Efficiency:** Save time and avoid the hassle of manual entry and submission. This extension is designed to help you navigate the often stressful registration period with confidence and ease.
 - **Accuracy:** Reduce the risk of errors by automating the registration process. The extension ensures that your CRNs are entered correctly and that the appropriate actions are taken for each course.
-- **Stay Organized**: Keep an organized list of all your registration actions to ensure nothing is missed.
+- **Stay Organized:** Keep an organized list of all your registration actions to ensure nothing is missed.
 
 ## Responsibility
 
