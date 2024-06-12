@@ -1,5 +1,7 @@
 # Simplify Your Course Registration at CityU
 
+Download the extension now from [Chrome Web Store](https://chromewebstore.google.com/detail/jhnpchjleghlifaihgpcihochcjecmcn)
+
 ## Introduction
 
 **CityU Quick Course Adder Pro Max** is a powerful Chrome extension designed specifically for City University of Hong Kong (CityU) students. When you navigate to the Course Registration page, this extension will automatically register, drop, or waitlist courses. It automates the process of entering Course Registration Numbers (CRNs) and selecting the appropriate action for each course, making your course management hassle-free and efficient.
