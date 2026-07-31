@@ -28,7 +28,7 @@
     "@types/chrome": "^0.0.268",
     "adm-zip": "^0.5.14",
     "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
+    "postcss": "^8.5.25",
     "prettier": "^3.0.3",
     "prettier-plugin-svelte": "^3.0.3",
     "svelte": "^5.55.2",
